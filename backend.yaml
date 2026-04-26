@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: temperaturas-backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: temperaturas-backend
+  template:
+    metadata:
+      labels:
+        app: temperaturas-backend
+    spec:
+      containers:
+      - name: temperaturas-backend
+        image: cristinasv/temperaturas-backend:latest
+        ports:
+        - containerPort: 5000
+        env:
+        - name: FLASK_ENV
+          value: "production"
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "80m"
+          limits:
+            memory: "128Mi"
+            cpu: "250m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: temperaturas-backend
+spec:
+  type: ClusterIP
+  ports:
+  - port: 5000
+    targetPort: 5000
+  selector:
+    app: temperaturas-backend

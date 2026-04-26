@@ -62,4 +62,4 @@ jobs:
 
     - name: Deploy to EKS
       run: |
-        kubectl apply -f frontend.yaml
+        kubectl set image deployment/temperaturas-frontend temperaturas-frontend=${{ steps.docker_meta.outputs.tags }}
